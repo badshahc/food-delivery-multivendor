@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import { useContext } from "react";
-import { Linking, Text, TouchableOpacity, View } from "react-native";
+import { Linking, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 // Context
 import { AuthContext } from "@/lib/context/global/auth.context";
@@ -24,7 +24,6 @@ import {
 } from "@/lib/ui/useable-components/svg";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native-gesture-handler";
 import { useUserContext } from "@/lib/context/global/user.context";
 import SpinnerComponent from "@/lib/ui/useable-components/spinner";
 
@@ -53,14 +52,12 @@ export default function CustomDrawerContent(
     >
       <CustomDrawerHeader />
       {/* Drawer Items with Right Arrow */}
-      <ScrollView
+      <View
         key={currentTheme?.concat("Drawer_Content").concat("Scroll_View")}
         style={{
           backgroundColor: appTheme.themeBackground,
-          height: "auto",
           paddingBottom: 20,
         }}
-        scrollEnabled={true}
       >
         {props.state.routes.map((route, index) => {
           const isFocused = props.state.index === index;
@@ -156,7 +153,7 @@ export default function CustomDrawerContent(
         {/* EXTERNAL LINKS  */}
         <TouchableOpacity
           onPress={() => {
-            Linking.openURL("https://enatega.com/");
+            Linking.openURL("https://resto.com/");
           }}
           className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
           style={{ borderColor: appTheme.borderLineColor }}
@@ -180,7 +177,7 @@ export default function CustomDrawerContent(
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            Linking.openURL("https://multivendor.enatega.com/privacy");
+            Linking.openURL("https://multivendor.resto.com/privacy");
           }}
           className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
           style={{ borderColor: appTheme.borderLineColor }}
@@ -204,7 +201,7 @@ export default function CustomDrawerContent(
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            Linking.openURL("https://enatega-web.netlify.app/");
+            Linking.openURL("https://resto-web.netlify.app/");
           }}
           className="flex-row justify-between items-center px-4 py-4 border-b-[0.5px]"
           style={{ borderColor: appTheme.borderLineColor }}
@@ -252,7 +249,7 @@ export default function CustomDrawerContent(
             </Text>
           </View>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </DrawerContentScrollView>
   );
 }

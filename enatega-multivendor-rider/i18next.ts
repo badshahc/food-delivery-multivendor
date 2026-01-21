@@ -75,7 +75,7 @@ export const languageResources: { [key: string]: { translation: object } } = {
 // Function to get stored language from AsyncStorage or fallback to device locale
 const getStoredLanguage = async (): Promise<void> => {
   try {
-    const storedLang = await AsyncStorage.getItem("enatega-language");
+    const storedLang = await AsyncStorage.getItem("resto-language");
     const deviceLang = Localization.getLocales()[0]?.languageCode || "en";
     const initialLang = storedLang || deviceLang;
 

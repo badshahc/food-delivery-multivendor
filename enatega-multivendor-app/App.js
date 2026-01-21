@@ -34,8 +34,19 @@ import './i18next'
 import * as SplashScreen from 'expo-splash-screen'
 import TextDefault from './src/components/Text/TextDefault/TextDefault'
 import { ErrorBoundary } from './src/components/ErrorBoundary'
-import * as Clarity from '@microsoft/react-native-clarity';
 
+// Conditionally initialize Clarity only in development builds (not in Expo Go)
+// Clarity requires native modules that aren't available in Expo Go
+try {
+  const Clarity = require('@microsoft/react-native-clarity');
+  Clarity.initialize('mcdyi6urgs', {
+    logLevel: Clarity.LogLevel.Verbose, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
+  });
+} catch (error) {
+  // Clarity not available in Expo Go - this is expected
+  // Only works in development builds
+  console.log('Clarity not available (Expo Go mode):', error.message);
+}
 
 // LogBox.ignoreLogs([
 //   // 'Warning: ...',
@@ -43,11 +54,6 @@ import * as Clarity from '@microsoft/react-native-clarity';
 //   'Constants.deviceYearClass'
 // ]) // Ignore log notification by message
 // LogBox.ignoreAllLogs() // Ignore all log notifications
-
-
-Clarity.initialize('mcdyi6urgs', {
-  logLevel: Clarity.LogLevel.Verbose, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
-});
 
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => {

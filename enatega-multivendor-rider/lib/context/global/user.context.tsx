@@ -53,7 +53,7 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
   const [zoneId, setZoneId] = useState("");
 
   // Refs
-  const locationListener = useRef<LocationSubscription>();
+  const locationListener = useRef<LocationSubscription | null>(null);
   const coordinatesRef = useRef<LocationObject>({} as LocationObject);
 
   // Context
@@ -110,15 +110,27 @@ export const UserProvider = ({ children }: IUserProviderProps) => {
       async (location) => {
         try {
           const token = await AsyncStorage.getItem(RIDER_TOKEN);
-          if (!token) return;
+          if (!token) {
+            console.log("trackRiderLocation: missing token, skipping send");
+            return;
+          }
           if (
             coordinatesRef.current?.coords?.latitude ===
               location.coords?.latitude &&
             coordinatesRef.current?.coords?.longitude ===
               location.coords?.longitude
-          )
+          ) {
+            console.log(
+              "trackRiderLocation: no movement since last send",
+              location.coords
+            );
             return;
+          }
           coordinatesRef.current = location;
+          console.log("trackRiderLocation: sending location", {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          });
           client.mutate({
             mutation: UPDATE_LOCATION,
             variables: {

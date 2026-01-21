@@ -7,6 +7,7 @@ import "react-native-reanimated";
 import * as Sentry from "@sentry/react-native";
 
 import FlashMessage from "react-native-flash-message";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Service
 import setupApollo from "@/lib/apollo";
@@ -72,30 +73,32 @@ function RootLayout() {
   }
 
   return (
-    <AnimatedSplashScreen>
-      <AppThemeProvidor>
-        <ApolloProvider client={client}>
-          <AuthProvider client={client}>
-            <UserProvider>
-              <InternetProvider>
-                <ConfigurationProvider>
-                  <LocationProvider>
-                    <SoundProvider>
-                      <LocationPermissionComp>
-                        <RootStackLayout />
-                        <UnavailableStatus />
-                      </LocationPermissionComp>
-                      <StatusBar style="inverted" />
-                      <FlashMessage position="bottom" />
-                    </SoundProvider>
-                  </LocationProvider>
-                </ConfigurationProvider>
-              </InternetProvider>
-            </UserProvider>
-          </AuthProvider>
-        </ApolloProvider>
-      </AppThemeProvidor>
-    </AnimatedSplashScreen>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AnimatedSplashScreen>
+        <AppThemeProvidor>
+          <ApolloProvider client={client}>
+            <AuthProvider client={client}>
+              <UserProvider>
+                <InternetProvider>
+                  <ConfigurationProvider>
+                    <LocationProvider>
+                      <SoundProvider>
+                        <LocationPermissionComp>
+                          <RootStackLayout />
+                          <UnavailableStatus />
+                        </LocationPermissionComp>
+                        <StatusBar style="inverted" />
+                        <FlashMessage position="bottom" />
+                      </SoundProvider>
+                    </LocationProvider>
+                  </ConfigurationProvider>
+                </InternetProvider>
+              </UserProvider>
+            </AuthProvider>
+          </ApolloProvider>
+        </AppThemeProvidor>
+      </AnimatedSplashScreen>
+    </GestureHandlerRootView>
   );
 }
 

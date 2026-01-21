@@ -1,8 +1,8 @@
 {
   "project_info": {
     "project_number": "650001300965",
-    "firebase_url": "https://enatega-multivendor.firebaseio.com",
-    "project_id": "enatega-multivendor",
+    "firebase_url": "https://resto-multivendor.firebaseio.com",
+    "project_id": "resto-multivendor",
     "storage_bucket": "enatega-multivendor.appspot.com"
   },
   "client": [

@@ -21,15 +21,36 @@ export const LocationProvider = ({ children }: ILocationProviderProps) => {
       const { status } = await Location.getForegroundPermissionsAsync();
       if (status === "granted") {
         setLocationPermission(true);
-      }
-      const currentLocation = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.BestForNavigation,
-      });
-      if (currentLocation) {
-        setLocation(currentLocation.coords as unknown as ICoodinates);
+        // Only get current location if permission is granted
+        try {
+          const currentLocation = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.BestForNavigation,
+          });
+          if (currentLocation) {
+            setLocation(currentLocation.coords as unknown as ICoodinates);
+          }
+        } catch (locationError) {
+          console.log("Error getting location: ", locationError);
+        }
+      } else {
+        // Permission not granted, request it
+        const { status: requestStatus } = await Location.requestForegroundPermissionsAsync();
+        if (requestStatus === "granted") {
+          setLocationPermission(true);
+          try {
+            const currentLocation = await Location.getCurrentPositionAsync({
+              accuracy: Location.Accuracy.BestForNavigation,
+            });
+            if (currentLocation) {
+              setLocation(currentLocation.coords as unknown as ICoodinates);
+            }
+          } catch (locationError) {
+            console.log("Error getting location: ", locationError);
+          }
+        }
       }
     } catch (error) {
-      console.log("Error getting location: ", error);
+      console.log("Error getting location permission: ", error);
     }
   };
 
@@ -44,6 +65,10 @@ export const LocationProvider = ({ children }: ILocationProviderProps) => {
           timeInterval: 5000,
         },
         (location) => {
+          console.log("location.context: obtained device location", {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          });
           setLocation({
             latitude: location.coords.latitude.toString(),
             longitude: location.coords.longitude.toString(),

@@ -5,14 +5,21 @@ import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function UnavailableStatus() {
-  // Hooks
+  // Hooks - must be called before any conditional returns
   const pathName = usePathname();
   const { dataProfile } = useUserContext();
   const insets = useSafeAreaInsets(); // Get Safe Area Insets
 
-  if (pathName && pathName === "/login") return null;
-  if (!isBoolean(dataProfile?.available)) return null;
-  if (!!dataProfile?.available) return null;
+  // Check conditions after all hooks are called
+  const shouldShow =
+    pathName !== "/login" &&
+    isBoolean(dataProfile?.available) &&
+    !dataProfile?.available;
+
+  // Use conditional rendering instead of early return
+  if (!shouldShow) {
+    return null;
+  }
 
   return (
     <View

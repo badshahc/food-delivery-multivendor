@@ -71,7 +71,7 @@ function Login(props) {
                         style={[styles(currentTheme).textField, emailError !== null ? styles(currentTheme).errorInput : {}]}
                         placeholderTextColor={currentTheme.fontSecondColor}
                         // value={setEmail}
-                        // defaultValue='demo-customer@enatega.com'
+                        // defaultValue='demo-customer@resto.com'
                         defaultValue=''
                         onChangeText={(e) => handleSetEmail(e.toLowerCase().trim())}
                       />

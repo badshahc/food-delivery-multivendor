@@ -63,14 +63,31 @@ const { height } = Dimensions.get("window");
 // Added to prevent array bounds crashes when using invalid coordinates
 const isValidCoordinate = (coord?: LatLng): boolean => {
   if (!coord) return false;
-  return (
-    coord.latitude !== undefined &&
-    coord.longitude !== undefined &&
-    !isNaN(coord.latitude) &&
-    !isNaN(coord.longitude) &&
-    Math.abs(coord.latitude) <= 90 &&
-    Math.abs(coord.longitude) <= 180
-  );
+  const lat = coord.latitude;
+  const lng = coord.longitude;
+  
+  // Check if coordinates are defined and are numbers
+  if (
+    lat === undefined ||
+    lng === undefined ||
+    isNaN(lat) ||
+    isNaN(lng)
+  ) {
+    return false;
+  }
+  
+  // Check if coordinates are within valid ranges
+  if (Math.abs(lat) > 90 || Math.abs(lng) > 180) {
+    return false;
+  }
+  
+  // Exclude default/placeholder coordinates (0,0) which is in the ocean
+  // Also exclude coordinates that are exactly 0.0 (likely uninitialized)
+  if (lat === 0 && lng === 0) {
+    return false;
+  }
+  
+  return true;
 };
 
 export default function OrderDetailScreen() {
@@ -299,7 +316,10 @@ export default function OrderDetailScreen() {
     }
   }, [order]);
 
-  if (!localOrder) return;
+  // Use conditional rendering instead of early return to avoid hook order issues
+  if (!localOrder || !localOrder._id) {
+    return null;
+  }
 
   return (
     <>
@@ -438,12 +458,11 @@ export default function OrderDetailScreen() {
                     optimizeWaypoints={true}
                     onError={(error) => {
                       console.log("Detailed route error:", error);
-                      // Retry logic for NOT_FOUND errors
-                      if (
-                        error.toString().includes("NOT_FOUND") &&
-                        retryCount < 10
-                      ) {
-                        setRetryCount((prev) => prev + 1);
+                      console.log("Origin:", locationPin?.location);
+                      console.log("Destination:", restaurantAddressPin?.location);
+                      // NOT_FOUND usually means invalid coordinates or unreachable location
+                      if (error.toString().includes("NOT_FOUND")) {
+                        console.warn("Route not found - check if coordinates are valid and reachable");
                       }
                     }}
                   />
@@ -470,12 +489,12 @@ export default function OrderDetailScreen() {
                     }}
                     onError={(error) => {
                       console.log("Delivery route error:", error);
-                      // Retry logic for NOT_FOUND errors
-                      if (
-                        error.toString().includes("NOT_FOUND") &&
-                        retryCount < 10
-                      ) {
-                        setRetryCount((prev) => prev + 1);
+                      console.log("Origin:", locationPin?.location);
+                      console.log("Destination:", deliveryAddressPin?.location);
+                      // NOT_FOUND usually means invalid coordinates or unreachable location
+                      // Don't retry for NOT_FOUND as it won't help
+                      if (error.toString().includes("NOT_FOUND")) {
+                        console.warn("Route not found - check if coordinates are valid and reachable");
                       }
                     }}
                   />
@@ -504,12 +523,11 @@ export default function OrderDetailScreen() {
                     }}
                     onError={(error) => {
                       console.log("Default route error:", error);
-                      // Retry logic for NOT_FOUND errors
-                      if (
-                        error.toString().includes("NOT_FOUND") &&
-                        retryCount < 10
-                      ) {
-                        setRetryCount((prev) => prev + 1);
+                      console.log("Origin:", restaurantAddressPin?.location);
+                      console.log("Destination:", deliveryAddressPin?.location);
+                      // NOT_FOUND usually means invalid coordinates or unreachable location
+                      if (error.toString().includes("NOT_FOUND")) {
+                        console.warn("Route not found - check if coordinates are valid and reachable");
                       }
                     }}
                   />

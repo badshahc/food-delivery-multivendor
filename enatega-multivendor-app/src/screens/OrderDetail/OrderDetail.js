@@ -219,7 +219,24 @@ function OrderDetail(props) {
                 console.log('onerror', error)
               }}
             />
-            {order?.rider && <TrackingRider id={order?.rider?._id} />}
+            {order?.rider && (() => {
+              const riderId = order?.rider?._id
+              console.log('[OrderDetail] Rendering TrackingRider', {
+                hasRider: !!order?.rider,
+                riderId,
+                riderData: {
+                  _id: order?.rider?._id,
+                  name: order?.rider?.name,
+                  location: order?.rider?.location
+                },
+                orderStatus: order?.orderStatus
+              })
+              if (!riderId) {
+                console.log('[OrderDetail] ERROR: Rider exists but no _id', order?.rider)
+                return null
+              }
+              return <TrackingRider id={riderId} />
+            })()}
           </MapView>
         )}
         <View

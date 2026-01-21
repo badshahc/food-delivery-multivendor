@@ -60,7 +60,7 @@ export const useLogin = () => {
   // Reset password when registeredEmail becomes true
   useEffect(() => {
     if (registeredEmail) {
-      if (emailRef.current === 'demo-customer@enatega.com') {
+      if (emailRef.current === 'demo-customer@resto.com') {
         setPassword('123123')
       } else {
         setPassword('')

@@ -786,7 +786,7 @@ export const getCuisines = `query Cuisines{
   }
 }`
 
-export const rider = `query Rider($id:String){
+export const rider = `query Rider($id:String!){
   rider(id:$id){
     _id
     location {coordinates}
