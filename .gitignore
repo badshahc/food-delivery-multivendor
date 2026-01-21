@@ -67,3 +67,8 @@ buck-out/
 web-build/
 
 # @end expo-cli
+
+*.apk
+*.ipa
+android/*
+ios/*
