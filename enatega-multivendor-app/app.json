@@ -37,7 +37,7 @@
       },
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
-      "bundleIdentifier": "com.resto.multivendor",
+      "bundleIdentifier": "com.enatega.multivendor",
       "icon": "./assets/icon.png",
       "config": {
         "googleMapsApiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
@@ -69,7 +69,7 @@
     },
     "android": {
       "versionCode": 103,
-      "package": "com.resto.multivendor",
+      "package": "com.enatega.multivendor",
       "userInterfaceStyle": "automatic",
       "googleServicesFile": "./google-services.json",
       "splash": {

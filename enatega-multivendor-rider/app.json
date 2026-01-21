@@ -45,7 +45,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.resto.multirider",
+      "bundleIdentifier": "com.enatega.multirider",
       "config": {
         "googleMapsApiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
       },
@@ -74,7 +74,7 @@
           "apiKey": "AIzaSyCcm7_Wd7uvmC9YnYLu2JHGWPt6z1MaL1E"
         }
       },
-      "package": "com.resto.multirider",
+      "package": "com.enatega.multirider",
       "icon": "./lib/assets/images/appIcon.png",
       "adaptiveIcon": {
         "foregroundImage": "./lib/assets/images/appIcon.png",
